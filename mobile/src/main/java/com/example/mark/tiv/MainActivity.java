@@ -32,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
 
             new GetQuestion().execute();
 
+
             timerHandler.postDelayed(this, 15000); // How long in between questions. (15 seconds)
         }
     };
@@ -50,11 +51,11 @@ public class MainActivity extends AppCompatActivity {
 
      private String TAG = MainActivity.class.getSimpleName();
 
-/*
+
     public class updateWiki extends AsyncTask<String, Void, Void> {
 
 
-        public void updateWiki (String searchTerm) {
+        public void updateWiki (final String searchTerm) {
             HttpHandler sh = new HttpHandler();
             // Making a request to url and getting response
             String url = "https://en.wikipedia.org/w/api.php?action=opensearch&limit=1&format=json&search=" + searchTerm;
@@ -62,7 +63,6 @@ public class MainActivity extends AppCompatActivity {
 
             //String a = sUrl[0]
             Log.e(TAG, "Response from wiki: " + jsonStr);
-            Log.e(TAG, "URL:" + url);
 
             if (jsonStr != null) {
                 try {
@@ -71,18 +71,23 @@ public class MainActivity extends AppCompatActivity {
 
                     JSONArray c = jsonObj.getJSONArray(2);
 
+                    Log.e(TAG, "value of c: " + c.getString(0));
+
+
                     final String wikiText = c.getString(0);
 
-                    // runOnUiThread(new Runnable() {
-                    //    @Override
-                    //    public void run() {
-                    final TextView QuestionTextView = (TextView) findViewById(com.example.mark.tiv.R.id.wikiText);
-                    QuestionTextView.setText(searchTerm);
 
-                    //   }
-                    // });
+                     runOnUiThread(new Runnable() {
+                       @Override
+                        public void run() {
+                    final TextView QuestionTextView = (TextView) findViewById(com.example.mark.tiv.R.id.wikiText);
+                    QuestionTextView.setText(wikiText);
+
+                       }
+                     });
+
                 } catch (final JSONException e) {
-                    Log.e(TAG, "Error from Wiki parsing JSON");
+                    Log.e(TAG, "Error from Wiki parsing JSON " + e);
                 }
 
             } else {
@@ -94,13 +99,13 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected Void doInBackground(String ... arg0) {
 
-           updateWiki ("abc");
+           updateWiki ("bees");
 
             return null;
         }
 
     }
-    */
+
 
 
     private class GetQuestion extends AsyncTask<Void, Void, Void> {
@@ -208,17 +213,12 @@ public class MainActivity extends AppCompatActivity {
 
         }
 
+
         @Override
         protected Void doInBackground(Void... arg0) {
-
-
             displayNewQuestion();
-
-
-
-           return null;
+            return null;
         }
-
 
 
 
